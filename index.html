@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Embed Stream Finder</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #121212;
+      color: #f0f0f0;
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      color: #ff4081;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin: 1rem;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    button:hover {
+      background: #f50057;
+      transform: scale(1.1);
+    }
+
+    button:active {
+      background: #c51162;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 80vh;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      color: #b0b0b0;
+      font-style: italic;
+    }
+
+    .footer {
+      font-size: 1rem;
+      margin-top: 2rem;
+      color: #b0b0b0;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false">
+  <div class="container">
+    <h2>🎬 Stream Finder</h2>
+    
+    <button id="movieBtn">Movie</button>
+    <button id="seriesBtn">Series</button>
+
+    <p class="subtitle"></p>
+  </div>
+
+  <div class="footer">
+    <p>by Vilmerolle</p>
+  </div>
+
+  <script>
+    document.getElementById('movieBtn').addEventListener('click', () => {
+      window.location.href = "m.html";
+    });
+
+    document.getElementById('seriesBtn').addEventListener('click', () => {
+      window.location.href = "s.html";
+    });
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+        (e.ctrlKey && e.key === 'U')
+      ) {
+        e.preventDefault();
+      }
+    });
+
+    console.clear();
+    console.log = () => {};
+    console.error = () => {};
+    console.warn = () => {};
+  </script>
+</body>
+</html>

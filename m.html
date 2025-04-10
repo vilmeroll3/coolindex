@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Embed Updater</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1e1e2f;
+      color: #f0f0f0;
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      color: #ffcc00;
+    }
+
+    input {
+      padding: 0.75rem;
+      font-size: 1rem;
+      width: 70%;
+      max-width: 400px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background: #ffcc00;
+      color: #1e1e2f;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #e6b800;
+    }
+
+    iframe {
+      margin-top: 2rem;
+      width: 100%;
+      height: 500px;
+      border-radius: 12px;
+      border: 2px solid #333;
+    }
+
+    #status {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #ff6666;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false">
+  <h2>🎬 Movie Stream Finder</h2>
+  <input type="text" id="movieInput" placeholder="e.g. Inception" />
+  <br>
+  <button id="searchBtn">Search</button>
+  <div id="status"></div>
+  <iframe id="movieIframe" src="" allowfullscreen referrerpolicy="origin"></iframe>
+
+  <script>
+    const OMDB_API_KEY = 'de86ae2a';
+    document.getElementById('searchBtn').addEventListener('click', searchMovie);
+
+    async function searchMovie() {
+      const query = document.getElementById('movieInput').value.trim();
+      const statusDiv = document.getElementById('status');
+      statusDiv.textContent = '';
+
+      if (!query) {
+        statusDiv.textContent = 'Please enter a movie name.';
+        return;
+      }
+
+      try {
+        const res = await fetch(`https://www.omdbapi.com/?t=${encodeURIComponent(query)}&apikey=${OMDB_API_KEY}`);
+
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await res.json();
+
+        if (!data.imdbID) {
+          statusDiv.textContent = 'No movie found.';
+          return;
+        }
+
+        const imdbId = data.imdbID;
+        const iframe = document.getElementById('movieIframe');
+        iframe.src = `https://vidsrc.me/embed/movie?imdb=${imdbId}`;
+      } catch (err) {
+        statusDiv.textContent = 'Something went wrong fetching movie data.';
+      }
+    }
+
+    // 🔒 Disable right-click and F12, Ctrl+Shift+I, etc.
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+        (e.ctrlKey && e.key === 'U')
+      ) {
+        e.preventDefault();
+      }
+    });
+    // Optional: Clear console
+    console.clear();
+    console.log = () => {};
+    console.error = () => {};
+    console.warn = () => {};
+  </script>
+</body>
+</html>
